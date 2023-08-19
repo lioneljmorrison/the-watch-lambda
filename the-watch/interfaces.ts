@@ -12,8 +12,19 @@ export interface DeviceListStatus {
     hubDeviceId: string;
 }
 
+export interface DeviceImport {
+    deviceId: string;
+    deviceName: string;
+    deviceType: string;
+}
+
 export interface Device extends DeviceListStatus {
     deviceId: string;
+    accountId: string;
+    created: string;
+}
+
+export interface DeviceI extends DeviceImport {
     accountId: string;
     created: string;
 }
