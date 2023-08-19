@@ -94,6 +94,32 @@ Resources:
         Sourcemap: true
         Target: es2020
       SamResourceId: GetDeviceFunction
+  storeDevice:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: storeDevice
+      Handler: deviceStore.lambdaHandler
+      Runtime: nodejs18.x
+      Architectures:
+      - x86_64
+      Events:
+        TheWatch:
+          Type: Api
+          Properties:
+            Path: /device-store/{deviceId}/{accountId}
+            Method: get
+      Environment:
+        Variables:
+          NODE_OPTIONS: ' --enable-source-maps'
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+        - deviceStore.ts
+        Minify: true
+        Sourcemap: true
+        Target: es2020
+      SamResourceId: storeDevice
 Outputs:
   TheWatchApi:
     Description: API Gateway endpoint URL for Prod stage for The Watch function

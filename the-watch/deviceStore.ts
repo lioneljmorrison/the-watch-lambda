@@ -1,8 +1,8 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { switchbot } from './utility';
-import { LogDeviceStatus } from './interfaces';
+import { Device, LogDeviceStatus } from './interfaces';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { PutCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
+import { switchbot } from './utility';
 
 /**
  *
@@ -30,15 +30,23 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
             `${process.env.URI}/${process.env.VER}/devices/${routeParams?.deviceId}/status`,
             requestOptions,
         );
+        const device = (await deviceData.json()).body;
 
-        const data: LogDeviceStatus = {
+        delete device.deviceId;
+        delete device.humidity;
+        delete device.temperature;
+        delete device.version;
+        delete device.battery;
+
+        const data: Device = {
+            deviceId: routeParams?.deviceId as string,
+            accountId: routeParams?.accountId as string,
             created: Date.now().toString(),
-            accountId: routeParams?.accountId,
-            ...(await deviceData.json()).body,
+            ...device,
         };
 
         const command = new PutCommand({
-            TableName: 'logs',
+            TableName: 'devices',
             Item: data,
         });
 

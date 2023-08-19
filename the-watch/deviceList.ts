@@ -1,6 +1,5 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { OpenAPIConfig } from './interfaces';
-import { SwitchbotAuth } from './switchbot';
+import { switchbot } from './utility';
 
 /**
  *
@@ -13,12 +12,6 @@ import { SwitchbotAuth } from './switchbot';
  */
 
 export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    const switchbot = new SwitchbotAuth({
-        secret: process.env.SECRET || '',
-        token: process.env.TOKEN || '',
-        nonce: process.env.NONCE || '',
-    });
-
     const requestOptions: RequestInit = {
         method: 'GET',
         headers: switchbot.fetchHeaderDeviceList,
