@@ -1,8 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { Device } from './interfaces';
+import { Account } from './interfaces';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { PutCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
-import { switchbot } from './utility';
 
 /**
  *
@@ -17,36 +16,17 @@ import { switchbot } from './utility';
 export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const client = new DynamoDBClient({});
     const docClient = DynamoDBDocumentClient.from(client);
-    const routeParams = event.pathParameters;
-
-    const requestOptions: RequestInit = {
-        method: 'GET',
-        headers: switchbot.fetchHeaderDeviceList,
-        redirect: 'follow',
-    };
+    const params = event.queryStringParameters;
 
     try {
-        const deviceData = await fetch(
-            `${process.env.URI}/${process.env.VER}/devices/${routeParams?.deviceId}/status`,
-            requestOptions,
-        );
-        const device = (await deviceData.json()).body;
-
-        delete device.deviceId;
-        delete device.humidity;
-        delete device.temperature;
-        delete device.version;
-        delete device.battery;
-
-        const data: Device = {
-            deviceId: routeParams?.deviceId as string,
-            accountId: routeParams?.accountId as string,
+        const data: Account = {
+            id: params?.accountId as string,
+            company: params?.companyName as string,
             created: Date.now().toString(),
-            ...device,
         };
 
         const command = new PutCommand({
-            TableName: 'devices',
+            TableName: 'account',
             Item: data,
         });
 
@@ -56,7 +36,7 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
             return {
                 statusCode: 500,
                 body: JSON.stringify({
-                    message: `Failed to log status for ${routeParams}`,
+                    message: `Failed to log status for ${params}`,
                 }),
             };
         }
