@@ -72,7 +72,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: GetDeviceFunction
-      Handler: getDevice.lambdaHandler
+      Handler: deviceStatus.lambdaHandler
       Runtime: nodejs18.x
       Architectures:
       - x86_64
@@ -80,7 +80,7 @@ Resources:
         TheWatch:
           Type: Api
           Properties:
-            Path: /device
+            Path: /device-status/{device}
             Method: get
       Environment:
         Variables:
@@ -89,7 +89,7 @@ Resources:
       BuildMethod: esbuild
       BuildProperties:
         EntryPoints:
-        - getDevice.ts
+        - deviceStatus.ts
         Minify: true
         Sourcemap: true
         Target: es2020

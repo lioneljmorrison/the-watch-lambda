@@ -13,8 +13,22 @@ export interface DeviceList {
     message: string;
 }
 
+export interface DeviceStatus {
+    deviceId: string;
+    deviceType: string;
+    hubDeviceId: string;
+    humidity: number;
+    temperature: number;
+    version: string;
+    battery: number;
+}
+
 export interface OpenAPIConfig {
     secret: string;
     token: string;
     nonce: string;
+}
+
+export interface deviceStatusParameters {
+    device: string;
 }

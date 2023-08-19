@@ -66,7 +66,7 @@ Resources:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: the-watch/
-      Handler: getDevice.lambdaHandler
+      Handler: deviceStatus.lambdaHandler
       Runtime: nodejs18.x
       Architectures:
         - x86_64
@@ -74,7 +74,7 @@ Resources:
         TheWatch:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /device
+            Path: /device-status/{device}
             Method: get
     Metadata: # Manage esbuild properties
       BuildMethod: esbuild
@@ -83,7 +83,7 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints: 
-        - getDevice.ts
+        - deviceStatus.ts
 
 
 Outputs:

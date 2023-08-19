@@ -1,6 +1,6 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { OpenAPIConfig } from './interfaces';
 import { SwitchbotAuth } from './switchbot';
+import { DeviceStatus, deviceStatusParameters } from './interfaces';
 
 /**
  *
@@ -19,6 +19,10 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
         nonce: process.env.NONCE || '',
     });
 
+    const routeParams = event.pathParameters?.device;
+
+    console.log(routeParams);
+
     const requestOptions: RequestInit = {
         method: 'GET',
         headers: switchbot.fetchHeaderDeviceList,
@@ -26,13 +30,18 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
     };
 
     try {
-        const deviceListData = await fetch(`${process.env.URI}/${process.env.VER}/devices`, requestOptions);
+        const deviceData = await fetch(
+            `${process.env.URI}/${process.env.VER}/devices/${routeParams}/status`,
+            requestOptions,
+        );
+
+        const data: DeviceStatus = await deviceData.json();
 
         return {
             statusCode: 200,
             body: JSON.stringify({
                 message: 'Success',
-                data: JSON.parse(await deviceListData.text()),
+                data,
             }),
         };
     } catch (err) {
