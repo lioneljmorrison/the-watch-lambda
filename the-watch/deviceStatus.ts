@@ -1,6 +1,8 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { OpenAPIConfig } from './interfaces';
 import { SwitchbotAuth } from './switchbot';
+import { LogDeviceStatus } from './interfaces';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { PutCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 
 /**
  *
@@ -13,11 +15,16 @@ import { SwitchbotAuth } from './switchbot';
  */
 
 export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+    const client = new DynamoDBClient({});
+    const docClient = DynamoDBDocumentClient.from(client);
+
     const switchbot = new SwitchbotAuth({
         secret: process.env.SECRET || '',
         token: process.env.TOKEN || '',
         nonce: process.env.NONCE || '',
     });
+
+    const routeParams = event.pathParameters;
 
     const requestOptions: RequestInit = {
         method: 'GET',
@@ -26,13 +33,38 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
     };
 
     try {
-        const deviceListData = await fetch(`${process.env.URI}/${process.env.VER}/devices`, requestOptions);
+        const deviceData = await fetch(
+            `${process.env.URI}/${process.env.VER}/devices/${routeParams?.deviceId}/status`,
+            requestOptions,
+        );
+
+        const data: LogDeviceStatus = {
+            created: Date.now().toString(),
+            accountId: routeParams?.accountId,
+            ...(await deviceData.json()).body,
+        };
+
+        const command = new PutCommand({
+            TableName: 'logs',
+            Item: data,
+        });
+
+        const response = await docClient.send(command);
+
+        if (!response) {
+            return {
+                statusCode: 500,
+                body: JSON.stringify({
+                    message: `Failed to log status for ${routeParams}`,
+                }),
+            };
+        }
 
         return {
             statusCode: 200,
             body: JSON.stringify({
                 message: 'Success',
-                data: JSON.parse(await deviceListData.text()),
+                data,
             }),
         };
     } catch (err) {
