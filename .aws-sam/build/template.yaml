@@ -8,11 +8,17 @@ Description: 'the-watch
 Globals:
   Function:
     Timeout: 3
+    Environment:
+      Variables:
+        URI: uri
+        SECRET: secret
+        TOKEN: token
+        NONCE: nonce
 Resources:
-  TheWatchFunction:
+  CollectFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: TheWatchFunction
+      CodeUri: CollectFunction
       Handler: app.lambdaHandler
       Runtime: nodejs18.x
       Architectures:
@@ -21,7 +27,7 @@ Resources:
         TheWatch:
           Type: Api
           Properties:
-            Path: /collect
+            Path: /
             Method: get
       Environment:
         Variables:
@@ -34,7 +40,33 @@ Resources:
         Minify: true
         Sourcemap: true
         Target: es2020
-      SamResourceId: TheWatchFunction
+      SamResourceId: CollectFunction
+  DeviceListFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: DeviceListFunction
+      Handler: deviceList.lambdaHandler
+      Runtime: nodejs18.x
+      Architectures:
+      - x86_64
+      Events:
+        TheWatch:
+          Type: Api
+          Properties:
+            Path: /device-list
+            Method: get
+      Environment:
+        Variables:
+          NODE_OPTIONS: ' --enable-source-maps'
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+        - deviceList.ts
+        Minify: true
+        Sourcemap: true
+        Target: es2020
+      SamResourceId: DeviceListFunction
 Outputs:
   TheWatchApi:
     Description: API Gateway endpoint URL for Prod stage for The Watch function
