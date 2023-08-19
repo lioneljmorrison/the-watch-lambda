@@ -6,7 +6,7 @@ codeuri = "/home/lmorrison/dev/the-watch-lambda/the-watch"
 runtime = "nodejs18.x"
 architecture = "x86_64"
 handler = "app.lambdaHandler"
-manifest_hash = "1a591f8a43e932c088aea6c7e7b9b7a7"
+manifest_hash = "afd103ec1370a16d032da6c13a56360f"
 packagetype = "Zip"
 functions = ["CollectFunction"]
 
@@ -51,12 +51,19 @@ EntryPoints = ["app.ts"]
 
 
 
+
+
+
+
+
+
+
 [function_build_definitions.03e7c8ba-b156-4a1c-9df3-2fff7964f18e]
 codeuri = "/home/lmorrison/dev/the-watch-lambda/the-watch"
 runtime = "nodejs18.x"
 architecture = "x86_64"
 handler = "deviceList.lambdaHandler"
-manifest_hash = "1a591f8a43e932c088aea6c7e7b9b7a7"
+manifest_hash = "afd103ec1370a16d032da6c13a56360f"
 packagetype = "Zip"
 functions = ["DeviceListFunction"]
 
@@ -100,12 +107,19 @@ EntryPoints = ["deviceList.ts"]
 
 
 
+
+
+
+
+
+
+
 [function_build_definitions.aea91321-37bd-44ed-b0de-df52b40cd160]
 codeuri = "/home/lmorrison/dev/the-watch-lambda/the-watch"
 runtime = "nodejs18.x"
 architecture = "x86_64"
 handler = "deviceStatus.lambdaHandler"
-manifest_hash = "1a591f8a43e932c088aea6c7e7b9b7a7"
+manifest_hash = "afd103ec1370a16d032da6c13a56360f"
 packagetype = "Zip"
 functions = ["GetDeviceFunction"]
 
@@ -117,6 +131,13 @@ Minify = true
 Target = "es2020"
 Sourcemap = true
 EntryPoints = ["deviceStatus.ts"]
+
+
+
+
+
+
+
 
 
 

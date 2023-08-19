@@ -80,7 +80,7 @@ Resources:
         TheWatch:
           Type: Api
           Properties:
-            Path: /device-status/{device}
+            Path: /device-status/{deviceId}/{accountId}
             Method: get
       Environment:
         Variables:

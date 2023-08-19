@@ -23,6 +23,11 @@ export interface DeviceStatus {
     battery: number;
 }
 
+export interface LogDeviceStatus extends DeviceStatus {
+    created: string;
+    accountId: string;
+}
+
 export interface OpenAPIConfig {
     secret: string;
     token: string;
