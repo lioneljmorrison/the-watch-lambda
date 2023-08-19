@@ -146,6 +146,32 @@ Resources:
         Sourcemap: true
         Target: es2020
       SamResourceId: addAccount
+  DevicesImport:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: DevicesImport
+      Handler: deviceImport.lambdaHandler
+      Runtime: nodejs18.x
+      Architectures:
+      - x86_64
+      Events:
+        TheWatch:
+          Type: Api
+          Properties:
+            Path: /device-import/{accountId}
+            Method: post
+      Environment:
+        Variables:
+          NODE_OPTIONS: ' --enable-source-maps'
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+        - deviceImport.ts
+        Minify: true
+        Sourcemap: true
+        Target: es2020
+      SamResourceId: DevicesImport
 Outputs:
   TheWatchApi:
     Description: API Gateway endpoint URL for Prod stage for The Watch function
