@@ -12,6 +12,7 @@ Globals:
     Environment:
       Variables:
         URI: uri
+        VER: ver
         SECRET: secret
         TOKEN: token
         NONCE: nonce

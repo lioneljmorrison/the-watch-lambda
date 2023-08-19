@@ -11,6 +11,7 @@ Globals:
     Environment:
       Variables:
         URI: uri
+        VER: ver
         SECRET: secret
         TOKEN: token
         NONCE: nonce
@@ -67,6 +68,32 @@ Resources:
         Sourcemap: true
         Target: es2020
       SamResourceId: DeviceListFunction
+  GetDeviceFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: GetDeviceFunction
+      Handler: getDevice.lambdaHandler
+      Runtime: nodejs18.x
+      Architectures:
+      - x86_64
+      Events:
+        TheWatch:
+          Type: Api
+          Properties:
+            Path: /device
+            Method: get
+      Environment:
+        Variables:
+          NODE_OPTIONS: ' --enable-source-maps'
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+        - getDevice.ts
+        Minify: true
+        Sourcemap: true
+        Target: es2020
+      SamResourceId: GetDeviceFunction
 Outputs:
   TheWatchApi:
     Description: API Gateway endpoint URL for Prod stage for The Watch function

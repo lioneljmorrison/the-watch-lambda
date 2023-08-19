@@ -30,6 +30,19 @@ EntryPoints = ["app.ts"]
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 [function_build_definitions.03e7c8ba-b156-4a1c-9df3-2fff7964f18e]
 codeuri = "/home/lmorrison/dev/the-watch-lambda/the-watch"
 runtime = "nodejs18.x"
@@ -47,6 +60,49 @@ Minify = true
 Target = "es2020"
 Sourcemap = true
 EntryPoints = ["deviceList.ts"]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[function_build_definitions.4e494e53-9585-4da5-87f4-c325482cb4e5]
+codeuri = "/home/lmorrison/dev/the-watch-lambda/the-watch"
+runtime = "nodejs18.x"
+architecture = "x86_64"
+handler = "getDevice.lambdaHandler"
+manifest_hash = "1a591f8a43e932c088aea6c7e7b9b7a7"
+packagetype = "Zip"
+functions = ["GetDeviceFunction"]
+
+[function_build_definitions.4e494e53-9585-4da5-87f4-c325482cb4e5.metadata]
+BuildMethod = "esbuild"
+
+[function_build_definitions.4e494e53-9585-4da5-87f4-c325482cb4e5.metadata.BuildProperties]
+Minify = true
+Target = "es2020"
+Sourcemap = true
+EntryPoints = ["getDevice.ts"]
+
+
 
 
 

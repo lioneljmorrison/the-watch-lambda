@@ -1,27 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import * as crypto from 'crypto-js';
-
-interface DeviceList {
-    statusCode: number;
-    body: {
-        deviceList: {
-            deviceId: string;
-            deviceName: string;
-            deviceType: string;
-            enableCloudService: boolean;
-            hubDeviceId: string;
-        }[];
-    };
-    infraredRemoteList: any[];
-    message: string;
-}
-
-interface OpenAPIConfig {
-    switchBotUri: string;
-    secret: string;
-    token: string;
-    nonce: string;
-}
+import { OpenAPIConfig } from './interfaces';
+import { SwitchbotAuth } from './switchbot';
 
 /**
  *
@@ -34,36 +14,21 @@ interface OpenAPIConfig {
  */
 
 export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    /**
-     * TODO: This section need to be updated to be updated to take advantage of Lambda Environment Variables
-     */
-
     const config: OpenAPIConfig = {
-        switchBotUri: process.env.URI || '',
         secret: process.env.SECRET || '',
         token: process.env.TOKEN || '',
         nonce: process.env.NONCE || '',
     };
 
-    const t = Date.now();
-
-    const headers = new Headers();
-    headers.append('Authorization', config.token);
-    headers.append('nonce', config.nonce);
-    headers.append('t', t.toString());
-    headers.append(
-        'sign',
-        crypto.HmacSHA256(config.token + t + config.nonce, config.secret).toString(crypto.enc.Base64),
-    );
-
+    const switchbot = new SwitchbotAuth(config);
     const requestOptions: RequestInit = {
         method: 'GET',
-        headers,
+        headers: switchbot.fetchHeaderDeviceList,
         redirect: 'follow',
     };
 
     try {
-        const deviceListData = await fetch(`${config.switchBotUri}/v1.1/devices`, requestOptions);
+        const deviceListData = await fetch(`${process.env.URI}/${process.env.VER}/devices`, requestOptions);
 
         return {
             statusCode: 200,
