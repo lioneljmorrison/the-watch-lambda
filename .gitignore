@@ -4,6 +4,7 @@ node_modules
 
 #AWS Lambda compiled output
 .aws-sam
+env.json
 
 # Logs
 logs
