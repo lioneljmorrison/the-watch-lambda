@@ -1,13 +1,21 @@
+export interface DeviceListStatus {
+    deviceId: string;
+    deviceName: string;
+    deviceType: string;
+    enableCloudService: boolean;
+    hubDeviceId: string;
+}
+
+export interface Device extends DeviceListStatus {
+    deviceId: string;
+    accountId: string;
+    created: string;
+}
+
 export interface DeviceList {
     statusCode: number;
     body: {
-        deviceList: {
-            deviceId: string;
-            deviceName: string;
-            deviceType: string;
-            enableCloudService: boolean;
-            hubDeviceId: string;
-        }[];
+        deviceList: DeviceListStatus[];
     };
     infraredRemoteList: any[];
     message: string;
