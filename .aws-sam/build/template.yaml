@@ -1,0 +1,54 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'the-watch
+
+  Sample SAM Template for the-watch
+
+  '
+Globals:
+  Function:
+    Timeout: 3
+Resources:
+  TheWatchFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: TheWatchFunction
+      Handler: app.lambdaHandler
+      Runtime: nodejs18.x
+      Architectures:
+      - x86_64
+      Events:
+        TheWatch:
+          Type: Api
+          Properties:
+            Path: /collect
+            Method: get
+      Environment:
+        Variables:
+          NODE_OPTIONS: ' --enable-source-maps'
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+        - app.ts
+        Minify: true
+        Sourcemap: true
+        Target: es2020
+      SamResourceId: TheWatchFunction
+Outputs:
+  TheWatchApi:
+    Description: API Gateway endpoint URL for Prod stage for The Watch function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/collect/
+  TheWatchFunction:
+    Description: The Watch Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - TheWatchFunction
+      - Arn
+  TheWatchFunctionIamRole:
+    Description: Implicit IAM Role created for The Watch function
+    Value:
+      Fn::GetAtt:
+      - TheWatchFunctionRole
+      - Arn
