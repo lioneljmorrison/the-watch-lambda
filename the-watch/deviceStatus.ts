@@ -1,5 +1,5 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { SwitchbotAuth } from './switchbot';
+import { switchbot } from './utility';
 import { LogDeviceStatus } from './interfaces';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { PutCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
@@ -17,13 +17,6 @@ import { PutCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const client = new DynamoDBClient({});
     const docClient = DynamoDBDocumentClient.from(client);
-
-    const switchbot = new SwitchbotAuth({
-        secret: process.env.SECRET || '',
-        token: process.env.TOKEN || '',
-        nonce: process.env.NONCE || '',
-    });
-
     const routeParams = event.pathParameters;
 
     const requestOptions: RequestInit = {

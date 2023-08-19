@@ -1,4 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { LogDeviceStatus } from './interfaces';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { PutCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { switchbot } from './utility';
 
 /**
@@ -12,6 +15,10 @@ import { switchbot } from './utility';
  */
 
 export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+    const client = new DynamoDBClient({});
+    const docClient = DynamoDBDocumentClient.from(client);
+    const routeParams = event.pathParameters;
+
     const requestOptions: RequestInit = {
         method: 'GET',
         headers: switchbot.fetchHeaderDeviceList,
@@ -19,13 +26,38 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
     };
 
     try {
-        const deviceListData = await fetch(`${process.env.URI}/${process.env.VER}/devices`, requestOptions);
+        const deviceData = await fetch(
+            `${process.env.URI}/${process.env.VER}/devices/${routeParams?.deviceId}/status`,
+            requestOptions,
+        );
+
+        const data: LogDeviceStatus = {
+            created: Date.now().toString(),
+            accountId: routeParams?.accountId,
+            ...(await deviceData.json()).body,
+        };
+
+        const command = new PutCommand({
+            TableName: 'logs',
+            Item: data,
+        });
+
+        const response = await docClient.send(command);
+
+        if (!response) {
+            return {
+                statusCode: 500,
+                body: JSON.stringify({
+                    message: `Failed to log status for ${routeParams}`,
+                }),
+            };
+        }
 
         return {
             statusCode: 200,
             body: JSON.stringify({
                 message: 'Success',
-                data: JSON.parse(await deviceListData.text()),
+                data,
             }),
         };
     } catch (err) {
