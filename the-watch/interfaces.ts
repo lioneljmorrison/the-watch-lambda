@@ -1,3 +1,9 @@
+export interface Account {
+    company: string;
+    id: string;
+    created: string;
+}
+
 export interface DeviceListStatus {
     deviceId: string;
     deviceName: string;
