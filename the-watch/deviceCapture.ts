@@ -1,5 +1,4 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { switchbot } from './utility';
 import { DeviceHookResponse, LogDeviceStatus } from './interfaces';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { PutCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
@@ -31,12 +30,18 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
             battery: status.context.battery,
         };
 
-        const command = new PutCommand({
+        const logData = new PutCommand({
             TableName: 'logs',
             Item: data,
         });
 
-        const response = await docClient.send(command);
+        const latestData = new PutCommand({
+            TableName: 'latest',
+            Item: data,
+        });
+
+        const response = await docClient.send(logData);
+        await docClient.send(latestData);
 
         if (!response) {
             return {
