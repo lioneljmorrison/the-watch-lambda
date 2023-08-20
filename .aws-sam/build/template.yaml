@@ -200,9 +200,9 @@ Resources:
       SamResourceId: DevicesImportFunction
 Outputs:
   TheWatchApi:
-    Description: API Gateway endpoint URL for Prod stage for The Watch function
+    Description: API Gateway endpoint URL for Prod stage
     Value:
-      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/collect/
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/
   CollectFunction:
     Description: The Watch Lambda Function ARN
     Value:
