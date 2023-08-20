@@ -29,6 +29,20 @@ export interface DeviceI extends DeviceImport {
     created: string;
 }
 
+export interface DeviceHookResponse {
+    eventType: string;
+    eventVersion: string;
+    context: {
+        deviceType: string;
+        deviceMac: string;
+        temperature: number;
+        humidity: number;
+        battery: number;
+        scale: 'CELSIUS' | 'FAHRENHEIT';
+        timeOfSample: number;
+    };
+}
+
 export interface DeviceList {
     statusCode: number;
     body: {
@@ -41,10 +55,10 @@ export interface DeviceList {
 export interface DeviceStatus {
     deviceId: string;
     deviceType: string;
-    hubDeviceId: string;
+    hubDeviceId?: string;
     humidity: number;
     temperature: number;
-    version: string;
+    version?: string;
     battery: number;
 }
 
