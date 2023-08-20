@@ -94,10 +94,10 @@ Resources:
         Sourcemap: true
         Target: es2020
       SamResourceId: GetDeviceFunction
-  storeDevice:
+  StoreDeviceFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: storeDevice
+      CodeUri: StoreDeviceFunction
       Handler: deviceStore.lambdaHandler
       Runtime: nodejs18.x
       Architectures:
@@ -119,11 +119,11 @@ Resources:
         Minify: true
         Sourcemap: true
         Target: es2020
-      SamResourceId: storeDevice
-  deviceCapture:
+      SamResourceId: StoreDeviceFunction
+  DeviceCaptureFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: deviceCapture
+      CodeUri: DeviceCaptureFunction
       Handler: deviceCapture.lambdaHandler
       Runtime: nodejs18.x
       Architectures:
@@ -145,11 +145,11 @@ Resources:
         Minify: true
         Sourcemap: true
         Target: es2020
-      SamResourceId: deviceCapture
-  addAccount:
+      SamResourceId: DeviceCaptureFunction
+  AddAccountFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: addAccount
+      CodeUri: AddAccountFunction
       Handler: accountAdd.lambdaHandler
       Runtime: nodejs18.x
       Architectures:
@@ -171,11 +171,11 @@ Resources:
         Minify: true
         Sourcemap: true
         Target: es2020
-      SamResourceId: addAccount
-  DevicesImport:
+      SamResourceId: AddAccountFunction
+  DevicesImportFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: DevicesImport
+      CodeUri: DevicesImportFunction
       Handler: deviceImport.lambdaHandler
       Runtime: nodejs18.x
       Architectures:
@@ -197,21 +197,93 @@ Resources:
         Minify: true
         Sourcemap: true
         Target: es2020
-      SamResourceId: DevicesImport
+      SamResourceId: DevicesImportFunction
 Outputs:
   TheWatchApi:
     Description: API Gateway endpoint URL for Prod stage for The Watch function
     Value:
       Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/collect/
-  TheWatchFunction:
+  CollectFunction:
     Description: The Watch Lambda Function ARN
     Value:
       Fn::GetAtt:
-      - TheWatchFunction
+      - CollectFunction
       - Arn
-  TheWatchFunctionIamRole:
+  CollectFunctionIamRole:
     Description: Implicit IAM Role created for The Watch function
     Value:
       Fn::GetAtt:
-      - TheWatchFunctionRole
+      - CollectFunctionRole
+      - Arn
+  GetDeviceFunction:
+    Description: The Watch Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - GetDeviceFunction
+      - Arn
+  GetDeviceFunctionIamRole:
+    Description: Implicit IAM Role created for The Watch function
+    Value:
+      Fn::GetAtt:
+      - CollectFunctionRole
+      - Arn
+  DeviceListFunction:
+    Description: The Watch Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - DeviceListFunction
+      - Arn
+  DeviceListFunctionIamRole:
+    Description: Implicit IAM Role created for The Watch function
+    Value:
+      Fn::GetAtt:
+      - DeviceListFunctionRole
+      - Arn
+  StoreDeviceFunction:
+    Description: The Watch Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - StoreDeviceFunction
+      - Arn
+  StoreDeviceIamRole:
+    Description: Implicit IAM Role created for The Watch function
+    Value:
+      Fn::GetAtt:
+      - StoreDeviceFunctionRole
+      - Arn
+  DeviceCaptureFunction:
+    Description: The Watch Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - DeviceCaptureFunction
+      - Arn
+  DeviceCaptureFunctionIamRole:
+    Description: Implicit IAM Role created for The Watch function
+    Value:
+      Fn::GetAtt:
+      - DeviceCaptureFunctionRole
+      - Arn
+  AddAccountFunction:
+    Description: The Watch Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - AddAccountFunction
+      - Arn
+  AddAccountFunctionIamRole:
+    Description: Implicit IAM Role created for The Watch function
+    Value:
+      Fn::GetAtt:
+      - AddAccountFunctionRole
+      - Arn
+  DevicesImportFunction:
+    Description: The Watch Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - DevicesImportFunction
+      - Arn
+  DevicesImportFunctionIamRole:
+    Description: Implicit IAM Role created for The Watch function
+    Value:
+      Fn::GetAtt:
+      - DevicesImportFunctionRole
       - Arn

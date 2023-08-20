@@ -84,7 +84,7 @@ Resources:
         Sourcemap: true
         EntryPoints: 
         - deviceStatus.ts
-  storeDevice:
+  StoreDeviceFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: the-watch/
@@ -106,7 +106,7 @@ Resources:
         Sourcemap: true
         EntryPoints: 
         - deviceStore.ts
-  deviceCapture:
+  DeviceCaptureFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: the-watch/
@@ -128,7 +128,7 @@ Resources:
         Sourcemap: true
         EntryPoints: 
         - deviceCapture.ts
-  addAccount:
+  AddAccountFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: the-watch/
@@ -150,7 +150,7 @@ Resources:
         Sourcemap: true
         EntryPoints: 
         - accountAdd.ts
-  DevicesImport:
+  DevicesImportFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: the-watch/
@@ -179,11 +179,56 @@ Outputs:
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   TheWatchApi:
-    Description: "API Gateway endpoint URL for Prod stage for The Watch function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/collect/"
-  TheWatchFunction:
+    Description: "API Gateway endpoint URL for Prod stage"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+  
+  CollectFunction:
     Description: "The Watch Lambda Function ARN"
-    Value: !GetAtt TheWatchFunction.Arn
-  TheWatchFunctionIamRole:
+    Value: !GetAtt CollectFunction.Arn
+  CollectFunctionIamRole:
     Description: "Implicit IAM Role created for The Watch function"
-    Value: !GetAtt TheWatchFunctionRole.Arn
+    Value: !GetAtt CollectFunctionRole.Arn
+
+  GetDeviceFunction:
+    Description: "The Watch Lambda Function ARN"
+    Value: !GetAtt GetDeviceFunction.Arn
+  GetDeviceFunctionIamRole:
+    Description: "Implicit IAM Role created for The Watch function"
+    Value: !GetAtt CollectFunctionRole.Arn
+
+  DeviceListFunction:
+    Description: "The Watch Lambda Function ARN"
+    Value: !GetAtt DeviceListFunction.Arn
+  DeviceListFunctionIamRole:
+    Description: "Implicit IAM Role created for The Watch function"
+    Value: !GetAtt DeviceListFunctionRole.Arn
+
+  StoreDeviceFunction:
+    Description: "The Watch Lambda Function ARN"
+    Value: !GetAtt StoreDeviceFunction.Arn
+  StoreDeviceIamRole:
+    Description: "Implicit IAM Role created for The Watch function"
+    Value: !GetAtt StoreDeviceFunctionRole.Arn
+
+  DeviceCaptureFunction:
+    Description: "The Watch Lambda Function ARN"
+    Value: !GetAtt DeviceCaptureFunction.Arn
+  DeviceCaptureFunctionIamRole:
+    Description: "Implicit IAM Role created for The Watch function"
+    Value: !GetAtt DeviceCaptureFunctionRole.Arn
+
+  AddAccountFunction:
+    Description: "The Watch Lambda Function ARN"
+    Value: !GetAtt AddAccountFunction.Arn
+  AddAccountFunctionIamRole:
+    Description: "Implicit IAM Role created for The Watch function"
+    Value: !GetAtt AddAccountFunctionRole.Arn
+
+  DevicesImportFunction:
+    Description: "The Watch Lambda Function ARN"
+    Value: !GetAtt DevicesImportFunction.Arn
+  DevicesImportFunctionIamRole:
+    Description: "Implicit IAM Role created for The Watch function"
+    Value: !GetAtt DevicesImportFunctionRole.Arn
+
+
