@@ -127,7 +127,29 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints: 
-        - deviceCapture.ts
+        - deviceCapture.ts            
+  GetLatestFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: the-watch/
+      Handler: getLatest.lambdaHandler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Events:
+        TheWatch:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /get-latest/{deviceId}
+            Method: get
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints: 
+        - getLatest.ts
   AddAccountFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -230,5 +252,12 @@ Outputs:
   DevicesImportFunctionIamRole:
     Description: "Implicit IAM Role created for The Watch function"
     Value: !GetAtt DevicesImportFunctionRole.Arn
+
+  GetLatestFunction:
+    Description: "The Watch Lambda Function ARN"
+    Value: !GetAtt GetLatestFunction.Arn
+  GetLatestFunctionIamRole:
+    Description: "Implicit IAM Role created for The Watch function"
+    Value: !GetAtt GetLatestFunctionRole.Arn
 
 
