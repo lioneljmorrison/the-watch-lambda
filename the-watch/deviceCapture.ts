@@ -35,22 +35,24 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
             Item: data,
         });
 
+        console.log(data);
+
         const latestData = new PutCommand({
             TableName: 'latest',
             Item: data,
         });
 
-        const response = await docClient.send(logData);
-        await docClient.send(latestData);
+        // const response = await docClient.send(logData);
+        // await docClient.send(latestData);
 
-        if (!response) {
-            return {
-                statusCode: 500,
-                body: JSON.stringify({
-                    message: `Failed to log status for ${params}`,
-                }),
-            };
-        }
+        // if (!response) {
+        //     return {
+        //         statusCode: 500,
+        //         body: JSON.stringify({
+        //             message: `Failed to log status for ${params}`,
+        //         }),
+        //     };
+        // }
 
         return {
             statusCode: 200,
