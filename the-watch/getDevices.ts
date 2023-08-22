@@ -20,7 +20,7 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
     try {
         if (params?.accountId) {
             const latestData = new QueryCommand({
-                TableName: 'latest',
+                TableName: 'devices',
                 KeyConditionExpression: 'accountId = :account',
                 ExpressionAttributeValues: {
                     ':account': { S: params.accountId },

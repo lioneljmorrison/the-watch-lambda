@@ -140,7 +140,7 @@ Resources:
         TheWatch:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /get-latest/{deviceId}
+            Path: /get-latest/{accountId}
             Method: get
     Metadata: # Manage esbuild properties
       BuildMethod: esbuild
@@ -150,6 +150,28 @@ Resources:
         Sourcemap: true
         EntryPoints: 
         - getLatest.ts
+  GetDevicesFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: the-watch/
+      Handler: getDevices.lambdaHandler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Events:
+        TheWatch:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /get-devices/{accountId}
+            Method: get
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints: 
+        - getDevices.ts
   AddAccountFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -259,5 +281,12 @@ Outputs:
   GetLatestFunctionIamRole:
     Description: "Implicit IAM Role created for The Watch function"
     Value: !GetAtt GetLatestFunctionRole.Arn
+
+  GetDevicesFunction:
+    Description: "The Watch Lambda Function ARN"
+    Value: !GetAtt GetDevicesFunction.Arn
+  GetDevicesFunctionIamRole:
+    Description: "Implicit IAM Role created for The Watch function"
+    Value: !GetAtt GetDevicesFunctionRole.Arn
 
 
