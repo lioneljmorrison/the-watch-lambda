@@ -119,6 +119,7 @@ EntryPoints = ["app.ts"]
 
 
 
+
 [function_build_definitions.03e7c8ba-b156-4a1c-9df3-2fff7964f18e]
 codeuri = "/home/lmorrison/dev/the-watch-lambda/the-watch"
 runtime = "nodejs18.x"
@@ -136,6 +137,7 @@ Minify = true
 Target = "es2020"
 Sourcemap = true
 EntryPoints = ["deviceList.ts"]
+
 
 
 
@@ -329,6 +331,7 @@ EntryPoints = ["deviceStatus.ts"]
 
 
 
+
 [function_build_definitions.364ef532-3acb-4b65-b8b3-95d3a00a2b86]
 codeuri = "/home/lmorrison/dev/the-watch-lambda/the-watch"
 runtime = "nodejs18.x"
@@ -346,6 +349,7 @@ Minify = true
 Target = "es2020"
 Sourcemap = true
 EntryPoints = ["accountAdd.ts"]
+
 
 
 
@@ -476,6 +480,7 @@ EntryPoints = ["deviceStore.ts"]
 
 
 
+
 [function_build_definitions.e6745d3f-8bb7-408a-ab3f-aa184a9ffd26]
 codeuri = "/home/lmorrison/dev/the-watch-lambda/the-watch"
 runtime = "nodejs18.x"
@@ -493,6 +498,7 @@ Minify = true
 Target = "es2020"
 Sourcemap = true
 EntryPoints = ["deviceImport.ts"]
+
 
 
 
@@ -581,6 +587,7 @@ EntryPoints = ["getLatest.ts"]
 
 
 
+
 [function_build_definitions.b72cf0c7-249b-4a1c-bc05-a48477d5eb68]
 codeuri = "/home/lmorrison/dev/the-watch-lambda/the-watch"
 runtime = "nodejs18.x"
@@ -598,6 +605,7 @@ Minify = true
 Target = "es2020"
 Sourcemap = true
 EntryPoints = ["deviceCapture.ts"]
+
 
 
 [layer_build_definitions]
