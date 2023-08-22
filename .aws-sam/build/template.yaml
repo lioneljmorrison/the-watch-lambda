@@ -158,7 +158,7 @@ Resources:
         TheWatch:
           Type: Api
           Properties:
-            Path: /get-latest/{deviceId}
+            Path: /get-latest/{accountId}
             Method: get
       Environment:
         Variables:
@@ -172,6 +172,32 @@ Resources:
         Sourcemap: true
         Target: es2020
       SamResourceId: GetLatestFunction
+  GetDevicesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: GetDevicesFunction
+      Handler: getDevices.lambdaHandler
+      Runtime: nodejs18.x
+      Architectures:
+      - x86_64
+      Events:
+        TheWatch:
+          Type: Api
+          Properties:
+            Path: /get-devices/{accountId}
+            Method: get
+      Environment:
+        Variables:
+          NODE_OPTIONS: ' --enable-source-maps'
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+        - getDevices.ts
+        Minify: true
+        Sourcemap: true
+        Target: es2020
+      SamResourceId: GetDevicesFunction
   AddAccountFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -324,4 +350,16 @@ Outputs:
     Value:
       Fn::GetAtt:
       - GetLatestFunctionRole
+      - Arn
+  GetDevicesFunction:
+    Description: The Watch Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - GetDevicesFunction
+      - Arn
+  GetDevicesFunctionIamRole:
+    Description: Implicit IAM Role created for The Watch function
+    Value:
+      Fn::GetAtt:
+      - GetDevicesFunctionRole
       - Arn
