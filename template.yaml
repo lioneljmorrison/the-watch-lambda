@@ -39,7 +39,7 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints: 
-        - app.ts
+        - functions/app.ts
   DeviceListFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -61,7 +61,7 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints: 
-        - deviceList.ts
+        - functions/deviceList.ts
   GetDeviceFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -83,7 +83,7 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints: 
-        - deviceStatus.ts
+        - functions/deviceStatus.ts
   StoreDeviceFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -105,7 +105,7 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints: 
-        - deviceStore.ts
+        - functions/deviceStore.ts
   DeviceCaptureFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -127,7 +127,7 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints: 
-        - deviceCapture.ts            
+        - functions/deviceCapture.ts            
   GetLatestFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -149,7 +149,7 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints: 
-        - getLatest.ts
+        - functions/getLatest.ts
   GetDevicesFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -171,7 +171,7 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints: 
-        - getDevices.ts
+        - functions/getDevices.ts
   AddAccountFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -193,7 +193,7 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints: 
-        - accountAdd.ts
+        - functions/accountAdd.ts
   DevicesImportFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -215,7 +215,29 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints: 
-        - deviceImport.ts
+        - functions/deviceImport.ts
+  SendMessageFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: the-watch/
+      Handler: sendMessage.lambdaHandler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Events:
+        TheWatch:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /send-message
+            Method: post
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints: 
+        - functions/sendMessage.js
 
 
 Outputs:

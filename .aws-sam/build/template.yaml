@@ -37,7 +37,7 @@ Resources:
       BuildMethod: esbuild
       BuildProperties:
         EntryPoints:
-        - app.ts
+        - functions/app.ts
         Minify: true
         Sourcemap: true
         Target: es2020
@@ -63,7 +63,7 @@ Resources:
       BuildMethod: esbuild
       BuildProperties:
         EntryPoints:
-        - deviceList.ts
+        - functions/deviceList.ts
         Minify: true
         Sourcemap: true
         Target: es2020
@@ -89,7 +89,7 @@ Resources:
       BuildMethod: esbuild
       BuildProperties:
         EntryPoints:
-        - deviceStatus.ts
+        - functions/deviceStatus.ts
         Minify: true
         Sourcemap: true
         Target: es2020
@@ -115,7 +115,7 @@ Resources:
       BuildMethod: esbuild
       BuildProperties:
         EntryPoints:
-        - deviceStore.ts
+        - functions/deviceStore.ts
         Minify: true
         Sourcemap: true
         Target: es2020
@@ -141,7 +141,7 @@ Resources:
       BuildMethod: esbuild
       BuildProperties:
         EntryPoints:
-        - deviceCapture.ts
+        - functions/deviceCapture.ts
         Minify: true
         Sourcemap: true
         Target: es2020
@@ -167,7 +167,7 @@ Resources:
       BuildMethod: esbuild
       BuildProperties:
         EntryPoints:
-        - getLatest.ts
+        - functions/getLatest.ts
         Minify: true
         Sourcemap: true
         Target: es2020
@@ -193,7 +193,7 @@ Resources:
       BuildMethod: esbuild
       BuildProperties:
         EntryPoints:
-        - getDevices.ts
+        - functions/getDevices.ts
         Minify: true
         Sourcemap: true
         Target: es2020
@@ -219,7 +219,7 @@ Resources:
       BuildMethod: esbuild
       BuildProperties:
         EntryPoints:
-        - accountAdd.ts
+        - functions/accountAdd.ts
         Minify: true
         Sourcemap: true
         Target: es2020
@@ -245,11 +245,37 @@ Resources:
       BuildMethod: esbuild
       BuildProperties:
         EntryPoints:
-        - deviceImport.ts
+        - functions/deviceImport.ts
         Minify: true
         Sourcemap: true
         Target: es2020
       SamResourceId: DevicesImportFunction
+  SendMessageFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: SendMessageFunction
+      Handler: sendMessage.lambdaHandler
+      Runtime: nodejs18.x
+      Architectures:
+      - x86_64
+      Events:
+        TheWatch:
+          Type: Api
+          Properties:
+            Path: /send-message
+            Method: post
+      Environment:
+        Variables:
+          NODE_OPTIONS: ' --enable-source-maps'
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+        - functions/sendMessage.js
+        Minify: true
+        Sourcemap: true
+        Target: es2020
+      SamResourceId: SendMessageFunction
 Outputs:
   TheWatchApi:
     Description: API Gateway endpoint URL for Prod stage
