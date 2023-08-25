@@ -16,6 +16,11 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
     const client = new DynamoDBClient({});
     const docClient = DynamoDBDocumentClient.from(client);
     const params = event.pathParameters;
+    const headers = {
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET',
+    };
 
     try {
         if (params?.accountId) {
@@ -33,6 +38,7 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
             if (!response) {
                 return {
                     statusCode: 500,
+                    headers,
                     body: JSON.stringify({
                         message: `Failed to log status for ${params}`,
                     }),
@@ -41,6 +47,7 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
 
             return {
                 statusCode: 200,
+                headers,
                 body: JSON.stringify({
                     message: 'Success',
                     data: response.Items,
@@ -52,6 +59,7 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
         console.log(err);
         return {
             statusCode: 500,
+            headers,
             body: JSON.stringify({
                 message: err,
             }),
